@@ -22,6 +22,7 @@ namespace asp.net_MVC_01.Controllers
         // GET: Notes
         public async Task<IActionResult> Index()
         {
+
             return View(await _db.Notes.ToListAsync());
         }
 
@@ -58,6 +59,7 @@ namespace asp.net_MVC_01.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 _db.Add(notesModel);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -72,6 +74,7 @@ namespace asp.net_MVC_01.Controllers
             {
                 return NotFound();
             }
+
 
             var notesModel = await _db.Notes.FindAsync(id);
             if (notesModel == null)
@@ -124,6 +127,7 @@ namespace asp.net_MVC_01.Controllers
                 return NotFound();
             }
 
+
             var notesModel = await _db.Notes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (notesModel == null)
@@ -147,6 +151,7 @@ namespace asp.net_MVC_01.Controllers
 
         private bool NotesModelExists(int id)
         {
+
             return _db.Notes.Any(e => e.Id == id);
         }
     }
