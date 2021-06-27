@@ -12,18 +12,18 @@ namespace asp.net_MVC_01.Controllers
 {
     public class NotesController : Controller
     {
-        private readonly ApplicationDbContext _db01;
-
+        private readonly ApplicationDbContext _db;
+    
         public NotesController(ApplicationDbContext context)
         {
-
-            _db01 = context;
+            _db = context;
         }
 
         // GET: Notes
         public async Task<IActionResult> Index()
         {
-            return View(await _db01.Notes.ToListAsync());
+
+            return View(await _db.Notes.ToListAsync());
         }
 
         // GET: Notes/Details/5
@@ -34,7 +34,7 @@ namespace asp.net_MVC_01.Controllers
                 return NotFound();
             }
 
-            var notesModel = await _db01.Notes
+            var notesModel = await _db.Notes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (notesModel == null)
             {
@@ -59,8 +59,9 @@ namespace asp.net_MVC_01.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db01.Add(notesModel);
-                await _db01.SaveChangesAsync();
+
+                _db.Add(notesModel);
+                await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(notesModel);
@@ -74,7 +75,8 @@ namespace asp.net_MVC_01.Controllers
                 return NotFound();
             }
 
-            var notesModel = await _db01.Notes.FindAsync(id);
+
+            var notesModel = await _db.Notes.FindAsync(id);
             if (notesModel == null)
             {
                 return NotFound();
@@ -98,8 +100,8 @@ namespace asp.net_MVC_01.Controllers
             {
                 try
                 {
-                    _db01.Update(notesModel);
-                    await _db01.SaveChangesAsync();
+                    _db.Update(notesModel);
+                    await _db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -125,7 +127,8 @@ namespace asp.net_MVC_01.Controllers
                 return NotFound();
             }
 
-            var notesModel = await _db01.Notes
+
+            var notesModel = await _db.Notes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (notesModel == null)
             {
@@ -140,15 +143,16 @@ namespace asp.net_MVC_01.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var notesModel = await _db01.Notes.FindAsync(id);
-            _db01.Notes.Remove(notesModel);
-            await _db01.SaveChangesAsync();
+            var notesModel = await _db.Notes.FindAsync(id);
+            _db.Notes.Remove(notesModel);
+            await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool NotesModelExists(int id)
         {
-            return _db01.Notes.Any(e => e.Id == id);
+
+            return _db.Notes.Any(e => e.Id == id);
         }
     }
 }
